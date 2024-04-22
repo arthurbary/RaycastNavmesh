@@ -20,7 +20,7 @@ public class View : MonoBehaviour
         Debug.DrawRay(transform.position, direction * distance, Color.green, 3f);
         if(Physics.Raycast(transform.position, direction, out hit, distance))
         {
-            Debug.Log($" The name of the hitted object : {hit.collider.name}");
+            //Debug.Log($" The name of the hitted object : {hit.collider.name}");
             if(hit.collider.transform == target)
             {
                 transform.position += direction * 10 * Time.deltaTime;
