@@ -8,6 +8,7 @@ public class OpenDoor : MonoBehaviour
 {
     [SerializeField] private Vector3 openPosition = Vector3.down;
     [SerializeField] private float speed = 1f;
+    [SerializeField] private float delay = 3f;
     Vector3 startPosition;
     Vector3 endPosition;
 
@@ -42,10 +43,16 @@ public class OpenDoor : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         Debug.Log(other.isTrigger);
+        
         if(other.isTrigger)
         {
-        closeDoor();
-
+            Invoke("closeDoor", 2f);
         }
+    }
+
+    IEnumerator WaitToCloseDoor()
+    {
+        yield return new WaitForSeconds(delay);
+        Debug.Log("CLOSING THE DOOR");
     }
 }
