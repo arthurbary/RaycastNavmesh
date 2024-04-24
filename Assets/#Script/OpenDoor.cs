@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.TextCore.Text;
+using UnityEngine.UIElements;
 [RequireComponent(typeof(NavMeshObstacle))]
 public class OpenDoor : MonoBehaviour
 {
@@ -19,7 +21,7 @@ public class OpenDoor : MonoBehaviour
     }
     private void openDoor()
     {
-        if(Vector3.Distance(transform.position, endPosition) > 0.01f)
+        if(Vector3.Distance(transform.position, endPosition) > 0.1f)
         {
             transform.position += openPosition.normalized * speed * Time.deltaTime;
         }
@@ -27,32 +29,34 @@ public class OpenDoor : MonoBehaviour
         {
             transform.position = endPosition;
         }
+        StartCoroutine(WaitToCloseDoor());
     }
 
-    private void closeDoor() 
+    private void CloseDoor() 
     {
-        Debug.Log("THERE");
-
-        transform.position -= openPosition.normalized * speed * Time.deltaTime;
+        //transform.position = startPosition;
+        //Schedul
+        Vector3 direction = (startPosition - endPosition).normalized;
+        Vector3 test = Vector3.up * 0.01f;
+        while (transform.position != startPosition)
+        {
+            
+        }
+        transform.position += direction * speed * Time.deltaTime;
+        transform.position += direction * speed * Time.deltaTime;
+        //transform.position += direction * speed * Time.deltaTime;
     }
     
     private void OnTriggerStay(Collider other)
     {
+        Debug.Log("OPEN THE DOOR!");
         openDoor();
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        Debug.Log(other.isTrigger);
-        
-        if(other.isTrigger)
-        {
-            Invoke("closeDoor", 2f);
-        }
     }
 
     IEnumerator WaitToCloseDoor()
     {
         yield return new WaitForSeconds(delay);
         Debug.Log("CLOSING THE DOOR");
+        CloseDoor();
     }
 }

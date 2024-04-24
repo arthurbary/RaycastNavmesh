@@ -7,9 +7,11 @@ public class EnemyStateMachine
 {
     public IState CurrentState {get; private set;}
     public ChaseState chaseState;
-    public EnemyStateMachine(NavMeshAgent agent, Transform playerTransform)
+    public PatrolState patrolState;
+    public EnemyStateMachine(NavMeshAgent agent, Transform playerTransform, Enemy enemy)
     {
-        chaseState = new ChaseState(agent, playerTransform);
+        chaseState = new ChaseState(enemy, this);
+        patrolState = new PatrolState(enemy, this);
     }
     public void Initialize(IState startingState)
     {

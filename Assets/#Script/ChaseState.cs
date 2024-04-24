@@ -7,10 +7,14 @@ public class ChaseState : IState
 {
     private NavMeshAgent agent;
     private Transform target;
-    public ChaseState(NavMeshAgent navMeshAgent, Transform transform)
+    private Enemy enemy;
+    private EnemyStateMachine stateMachine;
+    public ChaseState(Enemy enemy, EnemyStateMachine stateMachine)
     {
-        agent = navMeshAgent;
-        target = transform;
+        this.enemy = enemy;
+        this.stateMachine = stateMachine;
+        agent = enemy.agent;
+        target = enemy.target;
     }
     public void Enter() 
     {
@@ -19,6 +23,10 @@ public class ChaseState : IState
     public void Update() 
     {
         agent.SetDestination(target.position);
+        if(!enemy.CanSeePlayer())
+        {
+            stateMachine.TansitionTo(stateMachine.patrolState);
+        }
     }
     public void Exit() 
     {
